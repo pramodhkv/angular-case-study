@@ -1,1 +1,18 @@
 <app-header></app-header>
+
+<div class="row">
+  <div class="col-xs-12">
+      <br>
+      <app-menu
+      (menuWasSelected)="selectedMenu = $event"></app-menu>
+  </div>
+</div>
+
+<div class="col-md-7">
+    <app-work-area
+      *ngIf="selectedMenu; else infoText">
+    </app-work-area>
+    <ng-template #infoText>
+      <p>Please select a menu</p>
+    </ng-template>
+  </div>
