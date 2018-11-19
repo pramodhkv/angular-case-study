@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import {FormControl} from '@angular/forms';
+import {FormControl, NgForm} from '@angular/forms';
 import { Activity } from './activity.model';
+import { TimeEntryService } from '../time-entry.service';
+import { WorkAreaDetail } from './work-area-detail.model';
 
 @Component({
   selector: 'app-work-area',
@@ -34,9 +36,61 @@ export class WorkAreaComponent implements OnInit {
     new Activity("BMW IVS-R", 6)
   ];
 
-  constructor() { }
+  time = {hour: 7, minute: 0};
+
+  @ViewChild('workAreaForm') workAreaFormData: NgForm;
+
+  workAreaDetailArr: WorkAreaDetail[];
+
+  timeEntriesArray = [];
+
+  workItemAdded = false;
+  dataSaved = false;
+  errorOccurred = false;
+
+  constructor(private timeEntryService: TimeEntryService) { }
 
   ngOnInit() {
+  }
+
+  onSubmit() {
+    console.log(this.timeEntriesArray);
+
+    this.workItemAdded = true;
+    let hourTime = this.workAreaFormData.value.time.hour;
+    let minuteTime = this.workAreaFormData.value.time.minute;
+    if (hourTime < 10) {
+      hourTime = '0' + hourTime;
+    }
+    if (minuteTime < 10) {
+      minuteTime = '0' + minuteTime;
+    }
+
+    let formData = this.workAreaFormData.value;
+    let workAreaDetailObj = new WorkAreaDetail(
+      formData.activity,
+      formData.project,
+      formData.additionalInfo,
+      formData.time,
+      formData.datefield,
+      hourTime + ':' + minuteTime
+    );
+    this.timeEntriesArray.push({workAreaDetailObj});
+  }
+
+  onSaveData() {
+    console.log(this.timeEntriesArray);
+    this.timeEntryService.saveTimesheetEntries(this.timeEntriesArray)
+    .subscribe(
+      (response) => {
+        this.dataSaved = true;
+        console.log(response);
+      },
+      (error) => {
+        this.errorOccurred = true;
+        console.log(error);
+      }
+    );
   }
 
 

@@ -15,6 +15,12 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {DatepickerModule, BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 
+import {NgbModule, NgbTimepickerModule} from '@ng-bootstrap/ng-bootstrap';
+
+import {MatIconModule} from '@angular/material/icon';
+
+import { HttpModule } from "@angular/http";
+
 
 import { 
   MatAutocompleteModule,
@@ -28,7 +34,6 @@ import {
   MatDividerModule,
   MatExpansionModule,
   MatGridListModule,
-  MatIconModule,
   MatInputModule,
   MatListModule,
   MatMenuModule,
@@ -51,6 +56,7 @@ import {
   MatTooltipModule,
   MatFormFieldModule } from '@angular/material';
 import { DropdownDirective } from './shared/dropdown.directive';
+import { TimeEntryService } from './time-entry.service';
 
 
 @NgModule({
@@ -66,9 +72,12 @@ import { DropdownDirective } from './shared/dropdown.directive';
   imports: [
     BrowserModule,
     FormsModule,
+    HttpModule,
     AppRoutingModule,
     DatepickerModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    NgbModule,
+    NgbTimepickerModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,
     MatButtonModule,
@@ -104,7 +113,7 @@ import { DropdownDirective } from './shared/dropdown.directive';
     MatTooltipModule,
     MatFormFieldModule
   ],
-  providers: [],
+  providers: [TimeEntryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

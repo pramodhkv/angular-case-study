@@ -9,7 +9,9 @@
       <app-work-area *ngIf="selectedMenu; else infoText">
       </app-work-area>
       <ng-template #infoText>
-        <p>Please select a menu</p>
+          <div class="alert alert-info col-md-5" role="alert">
+              Please select a menu
+          </div>
       </ng-template>
     </div>
   </div>

@@ -1,35 +1,124 @@
-<div class="row" style="background-color: #f8f8f8;">
-  <div class="col-md-4">
-    <form>
-      <div class="row">
-          <div class="form-group">
-            <label for="datefield">Date Preference</label>
-            <input type="text" placeholder="Choose a Date" class="form-control" bsDatepicker>
-          </div>
-          
-          <br>
-          <div class="form-group">
-            <label for="activity">Activity</label>
-            <select class="form-control" id="activity" name="activity" [(ngModel)]="activity">
-              <option *ngFor="let activity of activities" [value]="activity.id">{{ activity.name }}</option>
-            </select>
-          </div>
+<mat-accordion>
+<mat-expansion-panel style="background-color: #f8f8f8">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+    </mat-panel-title>
+    <mat-panel-description style="font-size: 22px;font-weight: bold">
+        Booking Area
+    </mat-panel-description>
+  </mat-expansion-panel-header>
 
-          <br>
-          <div class="form-group">
-            <label for="project">Project</label>
-            <select class="form-control" id="project" name="project" [(ngModel)]="project">
-              <option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</option>
-            </select>
-          </div>
-
-          <br>
-          <div class="form-group">
-            <label for="additionalInfo">Additional Info</label>
-            <textarea name="additionalInfoAread" id="additionalInfo" cols="50" rows="7"></textarea>
-          </div>
-
-      </div>
-    </form>
+  <div class="row">
+    <div class="col-md-4">
+      <form (ngSubmit)="onSubmit(workAreaForm)" #workAreaForm="ngForm">
+        <div class="row">
+            <div class="form-group">
+              <label for="datefield">Date Preference</label>
+              <input type="text" [(ngModel)]="datefield" name="datefield" placeholder="Choose a Date" class="form-control" bsDatepicker>
+            </div>
+            
+            <br>
+            <div class="form-group">
+              <label for="workHours">Working Hours</label>
+              <ngb-timepicker [(ngModel)]="time" name="time"></ngb-timepicker>
+            </div>
+  
+            <br>
+            <div class="form-group">
+              <label for="activity">Activity</label>
+              <select class="form-control" id="activity" name="activity" [(ngModel)]="activity">
+                <option *ngFor="let activity of activities" [value]="activity.name">{{ activity.name }}</option>
+              </select>
+            </div>
+  
+            <br>
+            <div class="form-group">
+              <label for="project">Project</label>
+              <select class="form-control" id="project" name="project" [(ngModel)]="project">
+                <option *ngFor="let project of projects" [value]="project.name">{{ project.name }}</option>
+              </select>
+            </div>
+  
+            <br>
+            <div class="form-group">
+              <label for="additionalInfo">Additional Info</label>
+              <textarea class="form-control" [(ngModel)]="additionalInfo" name="additionalInfo" id="additionalInfo" cols="50" rows="7"></textarea>
+            </div>
+            
+            <br>
+            <div class="form-group btn-toolbar">
+              <button type="submit" class="btn btn-success">Add Entry</button>
+              <button type="button" class="btn btn-danger">Delete</button>
+              <button type="reset" class="btn btn-primary">Clear</button>
+            </div>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+
+</mat-expansion-panel>
+
+<br>
+<!--Overview Area-->
+<mat-expansion-panel style="background-color: #f8f8f8" [expanded]="workItemAdded">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+      </mat-panel-title>
+      <mat-panel-description style="font-size: 22px;font-weight: bold">
+          Work Overview Area
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+  
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-2 d-flex align-items-stretch" *ngFor="let workAreaObj of timeEntriesArray">
+            <mat-card class="tasks_card">
+              <mat-card-header class="d-flex align-items-start justify-content-between">
+                <mat-card-title>{{ workAreaObj.workAreaDetailObj.activity }}</mat-card-title>
+                <mat-card-subtitle><h1>{{ workAreaObj.workAreaDetailObj.timeInView }}</h1></mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <h2>{{ workAreaObj.workAreaDetailObj.project }}</h2>
+                <p class="mt-2">
+                  {{ workAreaObj.workAreaDetailObj.additionalInfo }}
+                </p>
+              </mat-card-content>
+            </mat-card>
+        </div>
+
+        <!-- <div class="col-sm-6 col-md-4 col-lg-3 mb-2 d-flex align-items-stretch">
+            <mat-card class="tasks_card">
+              <mat-card-header class="d-flex align-items-start justify-content-between">
+                <mat-card-title>Testing</mat-card-title>
+                <mat-card-subtitle><h1>08:00</h1></mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <h2>Automation Testing</h2>
+                <p class="mt-2">
+                  Reported Page test issues, Working on to convert recorded script into jmx file with transaction control name on it.
+                </p>
+              </mat-card-content>
+            </mat-card>
+        </div> -->
+      </div>
+      <br>
+      <div class="form-group btn-toolbar">
+        <button type="submit" class="btn btn-primary" (click)="onSaveData()">Save Data</button>
+        <button type="button" class="btn btn-danger">Cancel</button>
+      </div>
+
+      <br>
+      <div class="alert alert-success" role="alert" *ngIf="dataSaved">
+        Data has been saved successfully!
+      </div>
+
+      <div class="alert alert-danger" role="alert" *ngIf="errorOccurred">
+        There is an error!
+      </div>
+
+    </div>
+
+  </mat-expansion-panel>
+
+</mat-accordion>
+
